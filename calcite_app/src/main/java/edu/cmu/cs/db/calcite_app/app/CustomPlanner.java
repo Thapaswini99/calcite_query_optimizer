@@ -23,11 +23,6 @@ import org.apache.calcite.plan.RelOptRule;
 
 public class CustomPlanner {
 
-    private static final ImmutableList<RelOptRule> getJdbcRules(JdbcConvention jdbcConvention) {
-        
-        return ImmutableList.copyOf(JdbcRules.rules(jdbcConvention));
-    }
-
     private static ImmutableList<RelOptRule> getDefaultRules() {
         return ImmutableList.of(
             // Add default optimization rules here
@@ -89,19 +84,9 @@ public class CustomPlanner {
             volcanoPlanner = (VolcanoPlanner) cluster.getPlanner();
         }
         volcanoPlanner.clear();
-        // for (RelOptRule rule : getJdbcRules(jdbcConvention)) {
-        //     if(rule.getClass().getName().contains("JdbcToEnumerableConverterRule")) {
-        //         // Skip JdbcRules as they are already included in the getJdbcRules method
-        //         continue;
-        //     }
-        //     System.out.println("Adding rule: " + rule.getClass());
-        //     volcanoPlanner.addRule(rule);
-        // }
-
         volcanoPlanner.addRule(AbstractConverter.ExpandConversionRule.INSTANCE);
 
         for (RelOptRule rule : enumerableRules()) {
-            System.out.println("Adding rule: " + rule.getClass());
             volcanoPlanner.addRule(rule);
         }
 

@@ -7,16 +7,10 @@ public class RuleTracer {
         return new RelOptListener() {
             @Override
             public void relEquivalenceFound(RelEquivalenceEvent event) {
-                // System.out
-                // .println(
-                // "relEquivalenceFound: " + (event.getRel() != null ? event.getRel().explain()
-                // : "null"));
             }
 
             @Override
             public void relDiscarded(RelDiscardedEvent event) {
-                // System.out.println("ruleDiscarded: " +
-                // event.);
             }
 
             @Override
@@ -29,11 +23,6 @@ public class RuleTracer {
             public void ruleProductionSucceeded(RuleProductionEvent event) {
                 System.out.println(
                         "ruleProductionSucceeded: " + event.getRuleCall().getRule().getClass().getSimpleName());
-                // System.out.println(
-                //         "transformed to : " + (event.getRel() != null ? event.getRel().explain() : "null"));
-                // System.out.println(
-                //         "from: " + (event.getRuleCall().rels[0] != null ? event.getRuleCall().rels[0].explain()
-                //                 : "null"));
             }
 
             @Override

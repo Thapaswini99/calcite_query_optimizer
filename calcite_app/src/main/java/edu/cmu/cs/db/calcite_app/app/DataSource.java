@@ -17,6 +17,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 public class DataSource {
     private BasicDataSource dataSource;
     private JdbcConvention jdbcConvention;
+    private CalciteConnection calciteConnection;
 
     DataSource(String databasePath, String driverClassName) {
         dataSource = new BasicDataSource();
@@ -30,24 +31,18 @@ public class DataSource {
         info.setProperty("lex", "JAVA");
         Connection connection =
             DriverManager.getConnection("jdbc:calcite:", info);
-        CalciteConnection calciteConnection =
+        calciteConnection =
             connection.unwrap(CalciteConnection.class);
 
         SchemaPlus rootSchema = calciteConnection.getRootSchema();
 
         Expression expression = Schemas.subSchemaExpression(rootSchema, "opt_project", JdbcSchema.class);
 
-        System.out.println("Expression: " + (expression == null));
-
         jdbcConvention = new JdbcConvention(PostgresqlSqlDialect.DEFAULT, expression, "opt_project");
-
-        System.out.println("JdbcConvention: " + jdbcConvention.getTraitDef());
 
         Schema schema = new JdbcSchema(dataSource, PostgresqlSqlDialect.DEFAULT, jdbcConvention, null, null);
 
         rootSchema.add("opt_project", schema);
-
-        expression = schema.getExpression(rootSchema, "opt_project");
 
         return rootSchema;
     }
@@ -58,5 +53,9 @@ public class DataSource {
 
     public JdbcConvention getJdbcConvention() {
         return jdbcConvention;
+    }
+
+    public CalciteConnection getCalciteConnection() {
+        return calciteConnection;
     }
 }

@@ -54,17 +54,12 @@ public class App
             return;
         }
 
-        // Feel free to modify this to take as many or as few arguments as you want.
         System.out.println("Running the app!");
         String arg1 = args[0];
 
         String originalSql = Files.readString(new File(arg1).toPath());
         System.out.println("\tOriginalSql: " + originalSql);
         Optimizer.optimize(originalSql);
-        
-        // Note: in practice, you would probably use org.apache.calcite.tools.Frameworks.
-        // That package provides simple defaults that make it easier to configure Calcite.
-        // But there's a lot of magic happening there; since this is an educational project,
-        // we guide you towards the explicit method in the writeup.
+
     }
 }
