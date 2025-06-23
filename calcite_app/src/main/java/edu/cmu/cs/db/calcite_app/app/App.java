@@ -10,6 +10,7 @@ import org.apache.calcite.plan.RelOptUtil;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.sql.SqlExplainFormat;
 import org.apache.calcite.sql.SqlExplainLevel;
+import org.apache.calcite.util.PrecedenceClimbingParser.Op;
 
 public class App
 {
@@ -56,9 +57,10 @@ public class App
         // Feel free to modify this to take as many or as few arguments as you want.
         System.out.println("Running the app!");
         String arg1 = args[0];
-        System.out.println("\tArg1: " + arg1);
-        String arg2 = args[1];
-        System.out.println("\tArg2: " + arg2);
+
+        String originalSql = Files.readString(new File(arg1).toPath());
+        System.out.println("\tOriginalSql: " + originalSql);
+        Optimizer.optimize(originalSql);
         
         // Note: in practice, you would probably use org.apache.calcite.tools.Frameworks.
         // That package provides simple defaults that make it easier to configure Calcite.
